@@ -1,17 +1,15 @@
 package com.diegocastro.ejemplomvvmretrofitroom.domain
 
-import com.diegocastro.ejemplomvvmretrofitroom.data.QuoteRepository
 import com.diegocastro.ejemplomvvmretrofitroom.data.model.QuoteModel
 import com.diegocastro.ejemplomvvmretrofitroom.data.model.QuoteProvider
+import javax.inject.Inject
 
-class GetRandomQuoteUseCase {
-
-    private val repository = QuoteRepository()
+class GetRandomQuoteUseCase @Inject constructor(private val quoteProvider: QuoteProvider) {
 
     operator fun invoke(): QuoteModel? {
-        val quotes = QuoteProvider.quotes
+        val quotes = quoteProvider.quotes
         if (!quotes.isNullOrEmpty()) {
-            val randomNumber= (0..quotes.size - 1).random()
+            val randomNumber= (quotes.indices).random()
             return quotes[randomNumber]
         }
         return null

@@ -5,15 +5,16 @@ import com.diegocastro.ejemplomvvmretrofitroom.data.model.QuoteModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import javax.inject.Inject
 
 //esta clase permite devolver los datos tipo SOLID independiente del proveedor
 
-class QuoteService {
-    private val retrofit=RetrofitHelper.getRetrofit()
+
+class QuoteService @Inject constructor(private val api: QuoteApiClient) {
 
     suspend fun getQuotes(): List<QuoteModel> {
         return withContext(Dispatchers.IO) {
-            val response = retrofit.create(QuoteApiClient::class.java).getAllQuotes()
+            val response = api.getAllQuotes()
             response.body() ?: emptyList()
         }
     }
